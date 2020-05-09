@@ -118,11 +118,10 @@ header.header {
     text-decoration: none;
     font-size: 1.4rem;
 
-    transition: all .3s;
+    transition: background .3s;
 
     &:active {
         background: darken(#1199da, 10%);
-        transform: scale(1.06);
     }
 }
 
