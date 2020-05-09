@@ -45,7 +45,6 @@ header.header {
         background: red;
     }
 
-
     .header-logo {
         max-width: 240px;
         height: auto;
@@ -181,7 +180,7 @@ header.header {
 }
 
 .get-involved {
-    padding: 0 16px;
+    padding: 1rem 16px;
     margin: 64px 80px 0;
     display: flex;
     flex-direction: row;
@@ -190,5 +189,21 @@ header.header {
 
     a[href] {
         margin-left: auto;
+    }
+
+    > p {
+        margin: 0;
+        margin-right: 1rem;
+    }
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        margin-left: 16px;
+        margin-right: 16px;
+        align-items: flex-start;
+
+        a[href] {
+            margin: 1rem 0 0;
+        }
     }
 }
