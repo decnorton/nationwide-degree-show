@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "prod": "parcel build src/index.html",
+    "serve": "parcel serve src/index.html"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.26.5"
+  }
+}
