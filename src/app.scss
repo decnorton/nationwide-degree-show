@@ -20,18 +20,16 @@ body {
     font-size: 16px;
 }
 
+main.container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
 a[href] {
     color: white;
 }
 
-.content {
-    max-width: 960px;
-    margin: 0 auto;
-}
-
 header.header {
-    @extend .content;
-
     display: flex;
     margin-top: 64px;
     flex-direction: row;
@@ -130,99 +128,59 @@ header.header {
     }
 }
 
-.recent-submissions {
-    margin-top: 64px;
+.submissions-grid {
+    $row-height: 256px;
+    $cell-spacing: 1rem;
 
-    > h2 {
-        margin: 0;
-        padding: 24px;
-        background: white;
-        color: black;
-        text-align: center;
-        font-weight: 300;
-        font-size: 2rem;
-    }
-
-    .submissions-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        grid-column-gap: 2px;
-
-        > figure {
-            position: relative;
-            margin: 0;
-            background: pink;
-            overflow: hidden;
-
-            img {
-                width: 100%;
-                height: 0;
-                padding-top: 80%;
-            }
-
-            figcaption {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                padding: 48px 24px 24px;
-                background: linear-gradient(transparent, black);
-                line-height: 1.2;
-
-                p {
-                    margin: 0;
-                }
-            }
-
-            .submission-creator {
-                font-weight: bold;
-            }
-
-            .submission-institution {
-                color: rgba(white, .75);
-            }
-        }
-    }
-}
-
-.notice {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 1rem 16px;
-    border: 1px dashed rgba(white, .2);
-
-    a[href] {
-        margin-left: auto;
-    }
-
-    > p {
-        margin: 0;
-        margin-right: 1rem;
-    }
+    flex-wrap: wrap;
 
 
-    @media (max-width: $breakpoint) {
-        flex-direction: column;
-        align-items: flex-start;
+    @for $i from 1 through 36 {
+        figure:nth-child(#{$i}) {
+            $h: (random(400) + 70) + px;
 
-        a[href] {
-            margin: 1rem 0 0;
+            width: $h;
         }
     }
-}
 
-.closed {
-    opacity: .8;
-}
+    > figure {
+        position: relative;
+        height: $row-height;
+        background: pink;
+        overflow: hidden;
 
-.get-involved {
-    margin: 64px 80px 0;
+        color: white;
+        margin: 0 $cell-spacing $cell-spacing 0;
 
-    @extend .notice;
+        flex: 1 0 auto;
 
-    @media (max-width: $breakpoint) {
-        margin-left: 16px;
-        margin-right: 16px;
+        img {
+            width: 100%;
+            height: 0;
+            padding-top: 80%;
+        }
+
+        figcaption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 48px 24px 24px;
+            background: linear-gradient(transparent, black);
+            line-height: 1.2;
+
+            p {
+                margin: 0;
+            }
+        }
+
+        .submission-creator {
+            font-weight: bold;
+        }
+
+        .submission-institution {
+            color: rgba(white, .75);
+        }
     }
 }
