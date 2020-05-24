@@ -1,3 +1,4 @@
+
 $breakpoint: 640px;
 $font-family: journal, sans-serif;
 
@@ -21,7 +22,7 @@ body {
 }
 
 main.container {
-    max-width: 1280px;
+    //max-width: 1280px;
     margin: 0 auto;
 }
 
@@ -128,19 +129,38 @@ header.header {
     }
 }
 
+.submission-controls {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 24px 24px;
+    background: black;
+
+    .grid-sizes {
+        margin-right: auto;
+    }
+
+    .category-select {
+        width: 256px;
+        margin-left: auto;
+    }
+}
+
 .submissions-grid {
-    $row-height: 256px;
+    $row-height: 300px;
     $cell-spacing: 1rem;
 
     display: flex;
     flex-wrap: wrap;
 
+    min-height: 24px;
 
-    @for $i from 1 through 36 {
-        figure:nth-child(#{$i}) {
-            $h: (random(400) + 70) + px;
-
-            width: $h;
+    &.small {
+        figure {
         }
     }
 
@@ -157,11 +177,10 @@ header.header {
 
         img {
             width: 100%;
-            height: 0;
-            padding-top: 80%;
         }
 
         figcaption {
+            display: none;
             position: absolute;
             bottom: 0;
             left: 0;
@@ -184,3 +203,50 @@ header.header {
         }
     }
 }
+
+$vs-colors: (
+    lightest: rgba(white, 0.26),
+    light: rgba(white, 0.5),
+    dark: white,
+    darkest: rgba(white, .15),
+) !default;
+
+//  Global Component Variables
+$vs-component-line-height: 1.4 !default;
+$vs-component-placeholder-color: white !default;
+
+//  Active State
+$vs-state-active-bg: #5897fb !default;
+$vs-state-active-color: #fff !default;
+
+//  Disabled State
+$vs-state-disabled-bg: rgb(248, 248, 248) !default;
+$vs-state-disabled-color: map_get($vs-colors, 'light') !default;
+$vs-state-disabled-controls-color: map_get($vs-colors, 'light') !default;
+$vs-state-disabled-cursor: not-allowed !default;
+
+//  Borders
+$vs-border-width: 1px !default;
+$vs-border-style: solid !default;
+$vs-border-radius: 4px !default;
+$vs-border-color: map_get($vs-colors, 'lightest') !default;
+
+//  Component Controls: Clear, Open Indicator
+$vs-controls-color: map_get($vs-colors, 'light') !default;
+$vs-controls-size: 1 !default;
+$vs-controls-deselect-text-shadow: 0 1px 0 #fff;
+
+//  Selected
+$vs-selected-bg: #f0f0f0 !default;
+$vs-selected-border-color: $vs-border-color !default;
+$vs-selected-border-style: $vs-border-style !default;
+$vs-selected-border-width: $vs-border-width !default;
+
+//  Dropdown
+$vs-dropdown-z-index: 1000 !default;
+$vs-dropdown-min-width: 160px !default;
+$vs-dropdown-max-height: 350px !default;
+$vs-dropdown-box-shadow: 0px 3px 6px 0px map_get($vs-colors, 'darkest') !default;
+$vs-dropdown-bg: #fff !default;
+
+@import "../node_modules/vue-select/src/scss/vue-select.scss";

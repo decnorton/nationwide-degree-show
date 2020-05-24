@@ -21,37 +21,45 @@
         </div>
     </header>
 
-    <section class="submissions-grid">
-        <figure>
-            <img alt="Submission">
+    <nav class="submission-controls">
+        <div class="grid-sizes">
+            <button @click="size = 100">Small</button>
+            <button @click="size = 300">Medium</button>
+            <button @click="size = 500">Large</button>
+        </div>
 
-            <figcaption>
-                <p class="submission-creator">Charlotte Weyer</p>
-                <p>Some cool project title</p>
-                <p class="submission-institution">University of Plymouth - Digital Art & Technology</p>
-            </figcaption>
-        </figure>
 
-        <figure>
-            <img alt="Submission">
+        <div class="category-select">
+            <v-select :options="categories"
+                      placeholder="Showing all">
+            </v-select>
+        </div>
+    </nav>
 
-            <figcaption>
-                <p class="submission-creator">Charlotte Weyer</p>
-                <p>Some cool project title</p>
-                <p class="submission-institution">University of Plymouth - Digital Art & Technology</p>
-            </figcaption>
-        </figure>
+    <section class="submissions-grid-container">
+        <div class="submissions-grid">
+            <figure v-for="submission in submissions"
+                    v-bind:style="{
+                        width: size * submission.ratio + 'px',
+                        height: size + 'px',
+                        background: submission.colour
+                    }">
 
-        <figure>
-            <img alt="Submission">
+                <img alt="Submission"
+                     v-if="submission.thumb_name"
+                     v-bind:src="'/submissions/thumbs/800/' + submission.thumb_name"
+                     loading="lazy">
 
-            <figcaption>
-                <p class="submission-creator">Charlotte Weyer</p>
-                <p>Some cool project title</p>
-                <p class="submission-institution">University of Plymouth - Digital Art & Technology</p>
-            </figcaption>
-        </figure>
+                <figcaption>
+                    <p class="submission-creator">{{ submission.name }}</p>
+                </figcaption>
+            </figure>
+
+            <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+        </div>
     </section>
+
+    <script src="./app.ts"></script>
 
 </main>
 
