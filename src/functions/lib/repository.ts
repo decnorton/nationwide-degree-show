@@ -5,6 +5,8 @@ const submissions = require('../data/submissions.json') as any[];
 const defaultChunkSize = 30;
 
 export async function getSubmissions(event: APIGatewayEvent): Promise<any> {
+    console.log('queryStringParameters', event.queryStringParameters);
+
     const page = event.queryStringParameters.page;
     const chunkSize = Number(event.queryStringParameters.count || defaultChunkSize);
 

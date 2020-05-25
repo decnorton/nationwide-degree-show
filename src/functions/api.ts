@@ -2,6 +2,8 @@ import { APIGatewayEvent, Context } from 'aws-lambda';
 import { getCategories, getSubmissions } from './lib/repository';
 
 export async function handler(event: APIGatewayEvent, context: Context) {
+    console.log('path', event.path);
+    
     const path = event.path.replace('/.netlify/functions/api/', '');
 
     switch (path) {
