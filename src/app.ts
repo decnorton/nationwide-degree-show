@@ -50,7 +50,7 @@ const app = new Vue({
         this.selectedCategory = JSON.parse(localStorage.getItem('category'));
 
         this._keyListener = function ($event: KeyboardEvent) {
-            if ($event.key === 'ArrowDown') {
+            if (!$event.metaKey && $event.key === 'ArrowDown') {
                 $event.preventDefault();
 
                 document.scrollingElement.scrollBy({

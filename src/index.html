@@ -3,8 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover tomorrows talent from the largest collection of design graduate work from 2020 that you can enjoy from your own home.">
 
     <title>Nationwide Degree Show - Fresh Meet</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+    <link rel="alternate icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="manifest" href="./manifest.webmanifest">
+
     <link rel="stylesheet" href="./app.scss">
     <link rel="stylesheet" href="https://use.typekit.net/dla6bwy.css">
 </head>
@@ -54,6 +67,10 @@
 
         <infinite-loading :identifier="infiniteId" @infinite="fetch"></infinite-loading>
     </section>
+
+    <footer>
+        If you got this far, well done you! For more projects like this, take a look at <a href="https://instagram.com/_freshmeet">Fresh Meet</a>.
+    </footer>
 
     <submission-modal :showing="selectedSubmission"
                       @close="selectedSubmission = null"

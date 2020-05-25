@@ -30,7 +30,6 @@ body {
     display: none
 }
 
-
 main.container {
     //max-width: 1280px;
     margin: 0 auto;
@@ -68,6 +67,11 @@ header.header {
     .header-content {
         overflow: hidden;
     }
+}
+
+footer {
+    padding: 24px;
+    text-align: center;
 }
 
 .button {
