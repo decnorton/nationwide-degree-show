@@ -106,13 +106,9 @@ const app = new Vue({
             const category = this.selectedCategory;
 
             if (category) {
-                this.submissions.length = 0;
-                this.submissions.push(...this.allSubmissions.filter(submission => {
-                    return submission.categories.includes(category.value);
-                }));
+                this.submissions = this.allSubmissions.filter(submission => submission.categories.includes(category.value));
             } else {
-                this.submissions.length = 0;
-                this.submissions.push(...this.allSubmissions);
+                this.submissions = this.allSubmissions;
             }
         },
 
@@ -131,7 +127,6 @@ const app = new Vue({
                         this.page++;
 
                         this.allSubmissions.push(...submissions);
-                        this.submissions.push(...submissions);
 
                         this.applyCategoryFilter();
 
