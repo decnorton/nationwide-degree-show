@@ -1,7 +1,7 @@
 import { APIGatewayEvent } from 'aws-lambda';
 
 const categories = require('../data/categories.json');
-const submissions = require('../data/submissions.json');
+const submissions = require('../data/submissions.json') as any[];
 const chunkSize = 30;
 
 export async function getSubmissions(event: APIGatewayEvent): Promise<any[]> {
@@ -11,7 +11,11 @@ export async function getSubmissions(event: APIGatewayEvent): Promise<any[]> {
     if (page) {
         let start = (Number(page) - 1) * chunkSize;
 
-        results = submissions.splice(start, chunkSize);
+        if (start >= submissions.length) {
+            return results;
+        }
+
+        results = submissions.slice(start, start + chunkSize);
 
         console.log({
             start,
