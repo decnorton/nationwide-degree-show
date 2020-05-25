@@ -9,7 +9,7 @@ export async function getSubmissions(event: APIGatewayEvent): Promise<any[]> {
     let results = [];
 
     if (page) {
-        let start = (Number(page) - 1) * chunkSize;
+        const start = (Number(page) - 1) * chunkSize;
 
         if (start >= submissions.length) {
             return results;
