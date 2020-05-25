@@ -6,14 +6,10 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 
     switch (path) {
         case 'categories':
-            return respond({
-                data: await getCategories(event)
-            })
+            return respond(await getCategories(event));
 
         case 'submissions':
-            return respond({
-                data: await getSubmissions(event)
-            });
+            return respond(await getSubmissions(event));
     }
 
     return {

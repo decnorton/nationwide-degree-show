@@ -4,27 +4,33 @@ const categories = require('../data/categories.json');
 const submissions = require('../data/submissions.json') as any[];
 const chunkSize = 30;
 
-export async function getSubmissions(event: APIGatewayEvent): Promise<any[]> {
+export async function getSubmissions(event: APIGatewayEvent): Promise<any> {
     const page = event.queryStringParameters.page;
+    let start;
     let results = [];
 
     if (page) {
-        const start = (Number(page) - 1) * chunkSize;
+        start = (Number(page) - 1) * chunkSize;
 
-        if (start >= submissions.length) {
-            return results;
+        if (start < submissions.length) {
+            results = submissions.slice(start, start + chunkSize);
+
+            console.log({
+                start,
+                finish: start + chunkSize,
+                page
+            });
         }
-
-        results = submissions.slice(start, start + chunkSize);
-
-        console.log({
-            start,
-            finish: start + chunkSize,
-            page
-        });
     }
 
-    return results;
+    return {
+        data: results,
+        meta: {
+            page,
+            start,
+            finish: start + chunkSize
+        }
+    };
 }
 
 export function getCategories(event: APIGatewayEvent): Promise<any[]> {

@@ -3,7 +3,7 @@
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
 
-const version = 1;
+const version = 2;
 
 registerRoute(
     ({ url }) => url.origin === self.location.origin && url.pathname === '/',
