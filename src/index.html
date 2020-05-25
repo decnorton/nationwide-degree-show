@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<main class="container" id="app">
+<main class="container" id="app" >
     <header class="header">
         <div class="header-content">
             <h1 class="header-logo">
@@ -20,7 +20,7 @@
         </div>
     </header>
 
-    <nav class="submission-controls">
+    <nav class="submission-controls" v-cloak>
         <div class="grid-sizes">
             <button @click="changeSize(100)">Small</button>
             <button @click="changeSize(300)">Medium</button>
@@ -35,7 +35,7 @@
         </div>
     </nav>
 
-    <section class="submissions-grid-container">
+    <section class="submissions-grid-container" v-cloak>
         <div class="submissions-grid">
             <figure v-for="submission in submissions"
                     v-bind:style="{
@@ -62,7 +62,8 @@
     <submission-modal :showing="selectedSubmission"
                       @close="selectedSubmission = null"
                       @next="nextSubmission()"
-                      @previous="previousSubmission()">
+                      @previous="previousSubmission()"
+                      v-cloak>
         <div v-if="selectedSubmission">
             <img alt="Submission"
                  v-if="selectedSubmission.thumb_name"
