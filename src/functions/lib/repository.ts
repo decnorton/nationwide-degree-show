@@ -1,30 +1,21 @@
-import { APIGatewayEvent } from 'aws-lambda';
-
 const categories = require('../data/categories.json');
 const submissions = require('../data/submissions.json') as any[];
-const defaultChunkSize = 30;
+const defaultChunkSize = 50;
 
-export async function getSubmissions(event: APIGatewayEvent): Promise<any> {
-    console.log('queryStringParameters', event.queryStringParameters);
-
-    const page = event.queryStringParameters.page;
-    const chunkSize = Number(event.queryStringParameters.count || defaultChunkSize);
-
+export async function getSubmissions(page: number): Promise<any> {
     let start;
     let results = [];
 
-    if (page) {
-        start = (Number(page) - 1) * chunkSize;
+    start = (page - 1) * defaultChunkSize;
 
-        if (start < submissions.length) {
-            results = submissions.slice(start, start + chunkSize);
+    if (start < submissions.length) {
+        results = submissions.slice(start, start + defaultChunkSize);
 
-            console.log({
-                start,
-                finish: start + chunkSize,
-                page
-            });
-        }
+        console.log({
+            start,
+            finish: start + defaultChunkSize,
+            page
+        });
     }
 
     return {
@@ -32,12 +23,12 @@ export async function getSubmissions(event: APIGatewayEvent): Promise<any> {
         meta: {
             page,
             start,
-            finish: start + chunkSize
+            finish: start + defaultChunkSize
         }
     };
 }
 
-export async function getCategories(event: APIGatewayEvent): Promise<any> {
+export async function getCategories(): Promise<any> {
     return {
         data: categories
     };

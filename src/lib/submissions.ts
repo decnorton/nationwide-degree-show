@@ -10,10 +10,6 @@ export interface Submission {
 }
 
 export function fetchSubmissions(page: number): Promise<Submission[]> {
-    return axios.get('/.netlify/functions/api/submissions', {
-        params: {
-            page
-        }
-    })
+    return axios.get(`/.netlify/functions/api/submissions/${page}`)
         .then(response => response.data.data);
 }
