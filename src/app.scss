@@ -10,6 +10,10 @@ $font-family: journal, sans-serif;
     font-size: 16px;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background: black;
     color: white;
@@ -58,53 +62,6 @@ header.header {
     .header-content {
         overflow: hidden;
     }
-
-    .header-description {
-        display: flex;
-        flex-direction: row;
-        max-width: 100%;
-        margin-top: 24px;
-
-        p {
-            line-height: 1.2;
-        }
-    }
-
-    .header-description > section > p:first-child {
-        margin-top: 0;
-    }
-
-    .header-description > figure {
-        width: 50%;
-        margin: 0;
-        margin-left: 32px;
-        flex-shrink: 0;
-    }
-
-    .header-description > figure > img {
-        width: 100%;
-        height: auto;
-    }
-
-    @media (max-width: $breakpoint) {
-        //flex-direction: column;
-
-        .header-description {
-            flex-direction: column;
-            margin-right: 16px;
-            //align-items: center;
-
-
-            figure {
-                width: auto;
-                margin: 32px 48px 0 0;
-            }
-        }
-
-        .colour-bars {
-            margin: 0 16px;
-        }
-    }
 }
 
 .button {
@@ -145,8 +102,17 @@ header.header {
     }
 
     .category-select {
-        width: 256px;
+        min-width: 256px;
         margin-left: auto;
+
+        .vs__dropdown-toggle {
+            border: 0;
+            border-bottom: 1px solid white;
+        }
+
+        ::placeholder {
+            font-family: $font-family;
+        }
     }
 }
 
@@ -156,6 +122,8 @@ header.header {
 
     display: flex;
     flex-wrap: wrap;
+
+    margin-left: $cell-spacing;
 
     min-height: 24px;
 
@@ -175,8 +143,28 @@ header.header {
 
         flex: 1 0 auto;
 
+        cursor: pointer;
+        opacity: 0;
+
         img {
             width: 100%;
+            max-height: 100%;
+            opacity: 0;
+
+            transition: opacity 1s;
+            object-fit: cover;
+
+            &[lazy=loading] {
+                opacity: 0;
+            }
+
+            &[lazy=error] {
+                /*your style here*/
+            }
+
+            &[lazy=loaded] {
+                opacity: 1;
+            }
         }
 
         figcaption {
@@ -194,59 +182,36 @@ header.header {
             }
         }
 
-        .submission-creator {
-            font-weight: bold;
+        &.visible {
+            animation: come-in 1s ease forwards;
+
+            &:nth-child(4n - 3) {
+                animation-duration: 0.2s;
+            }
+
+            &:nth-child(4n - 2) {
+                animation-duration: 0.8s;
+            }
+
+            &:nth-child(4n - 1) {
+                animation-duration: 2s;
+            }
         }
 
-        .submission-institution {
-            color: rgba(white, .75);
+        @keyframes come-in {
+            from {
+                opacity: 0;
+                filter: grayscale(100%);
+                transform: translateY($cell-spacing * 2);
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
     }
 }
 
-$vs-colors: (
-    lightest: rgba(white, 0.26),
-    light: rgba(white, 0.5),
-    dark: white,
-    darkest: rgba(white, .15),
-) !default;
-
-//  Global Component Variables
-$vs-component-line-height: 1.4 !default;
-$vs-component-placeholder-color: white !default;
-
-//  Active State
-$vs-state-active-bg: #5897fb !default;
-$vs-state-active-color: #fff !default;
-
-//  Disabled State
-$vs-state-disabled-bg: rgb(248, 248, 248) !default;
-$vs-state-disabled-color: map_get($vs-colors, 'light') !default;
-$vs-state-disabled-controls-color: map_get($vs-colors, 'light') !default;
-$vs-state-disabled-cursor: not-allowed !default;
-
-//  Borders
-$vs-border-width: 1px !default;
-$vs-border-style: solid !default;
-$vs-border-radius: 4px !default;
-$vs-border-color: map_get($vs-colors, 'lightest') !default;
-
-//  Component Controls: Clear, Open Indicator
-$vs-controls-color: map_get($vs-colors, 'light') !default;
-$vs-controls-size: 1 !default;
-$vs-controls-deselect-text-shadow: 0 1px 0 #fff;
-
-//  Selected
-$vs-selected-bg: #f0f0f0 !default;
-$vs-selected-border-color: $vs-border-color !default;
-$vs-selected-border-style: $vs-border-style !default;
-$vs-selected-border-width: $vs-border-width !default;
-
-//  Dropdown
-$vs-dropdown-z-index: 1000 !default;
-$vs-dropdown-min-width: 160px !default;
-$vs-dropdown-max-height: 350px !default;
-$vs-dropdown-box-shadow: 0px 3px 6px 0px map_get($vs-colors, 'darkest') !default;
-$vs-dropdown-bg: #fff !default;
-
-@import "../node_modules/vue-select/src/scss/vue-select.scss";
+@import 'scss/category-filter';
+@import 'scss/modal';

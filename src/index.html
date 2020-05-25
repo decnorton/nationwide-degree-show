@@ -10,8 +10,7 @@
 </head>
 <body>
 
-<main class="container">
-
+<main class="container" id="app">
     <header class="header">
         <div class="header-content">
             <h1 class="header-logo">
@@ -23,14 +22,14 @@
 
     <nav class="submission-controls">
         <div class="grid-sizes">
-            <button @click="size = 100">Small</button>
-            <button @click="size = 300">Medium</button>
-            <button @click="size = 500">Large</button>
+            <button @click="changeSize(100)">Small</button>
+            <button @click="changeSize(300)">Medium</button>
+            <button @click="changeSize(500)">Large</button>
         </div>
-
 
         <div class="category-select">
             <v-select :options="categories"
+                      v-model="selectedCategory"
                       placeholder="Showing all">
             </v-select>
         </div>
@@ -43,25 +42,73 @@
                         width: size * submission.ratio + 'px',
                         height: size + 'px',
                         background: submission.colour
-                    }">
+                    }"
+                    @click="selectedSubmission = submission"
+                    v-intersect>
 
                 <img alt="Submission"
                      v-if="submission.thumb_name"
-                     v-bind:src="'/submissions/thumbs/800/' + submission.thumb_name"
-                     loading="lazy">
+                     v-lazy="'/submissions/thumbs/800/' + submission.thumb_name">
 
                 <figcaption>
                     <p class="submission-creator">{{ submission.name }}</p>
                 </figcaption>
             </figure>
-
-            <infinite-loading @infinite="infiniteHandler"></infinite-loading>
         </div>
+
+        <infinite-loading :identifier="infiniteId" @infinite="fetch"></infinite-loading>
     </section>
 
-    <script src="./app.ts"></script>
+    <submission-modal :showing="selectedSubmission"
+                      @close="selectedSubmission = null"
+                      @next="nextSubmission()"
+                      @previous="previousSubmission()">
+        <div v-if="selectedSubmission">
+            <img alt="Submission"
+                 v-if="selectedSubmission.thumb_name"
+                 v-bind:src="'/submissions/thumbs/2000/' + selectedSubmission.thumb_name">
 
+            <div class="submission-details-container">
+                <div class="submission-details">
+                    <h2>{{ selectedSubmission.name }}</h2>
+
+                    <p class="submission-website" v-if="selectedSubmission.website">
+                        <a :href="selectedSubmission.website">{{ selectedSubmission.website }}</a>
+                    </p>
+
+                    <p class="submission-instagram" v-if="selectedSubmission.instagram">
+                        <a :href="selectedSubmission.instagram">{{ selectedSubmission.instagram }}</a>
+                    </p>
+
+                    <p class="submission-description">{{ selectedSubmission.description }}</p>
+                </div>
+            </div>
+        </div>
+    </submission-modal>
 </main>
+
+<script type="text/x-template" id="submission-modal">
+    <transition name="modal">
+        <div class="modal-mask"
+             v-if="showing"
+             @click="$emit('close')">
+            <div class="modal-wrapper">
+                <div class="modal-previous" @click.stop="$emit('previous')"></div>
+                <div class="modal-container">
+                    <div class="modal-content" @click.stop="">
+                        <slot></slot>
+                    </div>
+                </div>
+                <div class="modal-next" @click.stop="$emit('next')"></div>
+
+                <div class="modal-close" @click="$emit('close')"></div>
+            </div>
+        </div>
+    </transition>
+</script>
+
+
+<script src="./app.ts"></script>
 
 </body>
 </html>
