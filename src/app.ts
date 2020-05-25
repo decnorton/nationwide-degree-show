@@ -5,6 +5,7 @@ import vSelect from 'vue-select'
 
 import { fetchCategories } from './lib/categories';
 import { fetchSubmissions } from './lib/submissions';
+import { debounce } from './lib/utils/debounce';
 
 Vue.use(VueLazyload)
 Vue.use(InfiniteLoading, {
@@ -84,6 +85,16 @@ const app = new Vue({
                 // Convert the object into an array
                 .map(([value, label]) => ({ label, value }));
         });
+
+        this._resizeListener = debounce(() => {
+            // Make sure the details width matches the image.
+            this.matchDetailsWithImage();
+
+            // Force submission cell styles to be recalculated when the window is resized.
+            this.$forceUpdate();
+        }, 100);
+
+        window.addEventListener('resize', this._resizeListener);
     },
 
     beforeDestroy() {
@@ -144,6 +155,7 @@ const app = new Vue({
                 this.fetch();
             }
         },
+
         previousSubmission() {
             const currentIndex = this.submissions.indexOf(this.selectedSubmission);
 
@@ -151,6 +163,28 @@ const app = new Vue({
 
             this.infiniteId += 1;
         },
+
+        submissionStyle(submission) {
+            if (window.innerWidth > 420) {
+                return {
+                    'width': this.size * submission.ratio + 'px',
+                    'max-height': this.size + 'px',
+                    background: submission.colour
+                };
+            } else {
+                return {};
+            }
+        },
+
+        matchDetailsWithImage() {
+            // Each time an image is loaded, make sure the submission details are the same width as the image (bloody designers).
+            const $selectedSubmissionImage = this.$refs.selectedSubmissionImage;
+            const $selectedSubmissionDetails = this.$refs.selectedSubmissionDetails;
+
+            if ($selectedSubmissionImage && $selectedSubmissionDetails) {
+                $selectedSubmissionDetails.style.width = `${$selectedSubmissionImage.clientWidth}px`;
+            }
+        }
     }
 });
 

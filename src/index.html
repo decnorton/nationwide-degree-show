@@ -38,11 +38,7 @@
     <section class="submissions-grid-container" v-cloak>
         <div class="submissions-grid">
             <figure v-for="submission in submissions"
-                    v-bind:style="{
-                        width: size * submission.ratio + 'px',
-                        height: size + 'px',
-                        background: submission.colour
-                    }"
+                    :style="submissionStyle(submission)"
                     @click="selectedSubmission = submission"
                     v-intersect>
 
@@ -64,27 +60,29 @@
                       @next="nextSubmission()"
                       @previous="previousSubmission()"
                       v-cloak>
-        <div v-if="selectedSubmission">
+        <template v-if="selectedSubmission">
             <img alt="Submission"
+                 ref="selectedSubmissionImage"
                  v-if="selectedSubmission.thumb_name"
-                 v-bind:src="'/submissions/thumbs/2000/' + selectedSubmission.thumb_name">
+                 v-bind:src="'/submissions/thumbs/2000/' + selectedSubmission.thumb_name"
+                 @load="matchDetailsWithImage()">
 
-            <div class="submission-details-container">
-                <div class="submission-details">
-                    <h2>{{ selectedSubmission.name }}</h2>
+            <div class="submission-details"
+                 ref="selectedSubmissionDetails"
+                 v-if="selectedSubmission.thumb_name">
+                <h2>{{ selectedSubmission.name }}</h2>
 
-                    <p class="submission-website" v-if="selectedSubmission.website">
-                        <a :href="selectedSubmission.website">{{ selectedSubmission.website }}</a>
-                    </p>
+                <p class="submission-website" v-if="selectedSubmission.website">
+                    <a :href="selectedSubmission.website">{{ selectedSubmission.website }}</a>
+                </p>
 
-                    <p class="submission-instagram" v-if="selectedSubmission.instagram">
-                        <a :href="selectedSubmission.instagram">{{ selectedSubmission.instagram }}</a>
-                    </p>
+                <p class="submission-instagram" v-if="selectedSubmission.instagram">
+                    <a :href="selectedSubmission.instagram">{{ selectedSubmission.instagram }}</a>
+                </p>
 
-                    <p class="submission-description">{{ selectedSubmission.description }}</p>
-                </div>
+                <p class="submission-description">{{ selectedSubmission.description }}</p>
             </div>
-        </div>
+        </template>
     </submission-modal>
 </main>
 
@@ -94,15 +92,50 @@
              v-if="showing"
              @click="$emit('close')">
             <div class="modal-wrapper">
-                <div class="modal-previous" @click.stop="$emit('previous')"></div>
+                <div class="modal-previous" @click.stop="$emit('previous')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                        <g clip-path="url(#clip0)" stroke="#fff">
+                            <path d="M37.312-.605l-25 25M35.646 48.354l-24-24"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0">
+                                <path fill="#fff" d="M0 0h48v48H0z"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </div>
+
                 <div class="modal-container">
                     <div class="modal-content" @click.stop="">
                         <slot></slot>
                     </div>
                 </div>
-                <div class="modal-next" @click.stop="$emit('next')"></div>
 
-                <div class="modal-close" @click="$emit('close')"></div>
+                <div class="modal-next" @click.stop="$emit('next')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                        <g clip-path="url(#clip0)" stroke="#fff">
+                            <path d="M11.605 47.646l25-25M13.27-1.312l24 24"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0">
+                                <path fill="#fff" d="M0 0h48v48H0z"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="modal-close" @click="$emit('close')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                        <g clip-path="url(#clip0)" stroke="#fff">
+                            <path d="M48.354.354L.27 48.437M47.646 48.354L-.437.27"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0">
+                                <path fill="#fff" d="M0 0h48v48H0z"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </div>
             </div>
         </div>
     </transition>

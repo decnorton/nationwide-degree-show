@@ -15,6 +15,8 @@
 }
 
 .modal-wrapper {
+    $nav-button-width: 100px;
+
     position: relative;
     display: flex;
     align-items: center;
@@ -26,93 +28,50 @@
 
     .modal-close {
         position: fixed;
-        top: 16px;
-        right: 16px;
-        width: 48px;
-        height: 48px;
-
-        transform: rotate(45deg);
+        top: 0;
+        right: 0;
+        width: 64px;
+        height: 64px;
 
         cursor: pointer;
 
-        &:before, &:after {
-            content: "";
-            position: absolute;
-            z-index: -1;
-            background: white;
-        }
+        background: rgba(black, .8);
+        padding: 16px;
 
-        &:before {
-            left: 50%;
-            width: 1px;
-            margin-left: 0;
+        svg {
+            width: 100%;
             height: 100%;
         }
-
-        &:after {
-            top: 50%;
-            height: 1px;
-            margin-top: 0;
-            width: 100%;
-        }
-
     }
 
     .modal-previous,
     .modal-next {
         position: relative;
-        width: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $nav-button-width;
         height: 80vh;
         flex-shrink: 0;
 
         cursor: pointer;
         transition: background-color .2s;
 
-        &:after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            display: block;
-
-            width: 32px;
-            height: 32px;
-
-            border-width: 0;
-            border-color: white;
-            border-style: solid;
-            border-left-width: 1px;
-            border-top-width: 1px;
-
-            transition: all .3s;
+        svg {
+            width: 48px;
+            height: 48px;
         }
     }
 
     .modal-next {
-        &:after {
-            transform: translate(-100%, -50%) rotate(135deg);
-        }
-
         &:hover {
             background: linear-gradient(90deg, transparent, rgba(black, .4));
-
-            &:after {
-                transform: translate(-85%, -50%) rotate(135deg);
-            }
         }
     }
 
     .modal-previous {
-        &:after {
-            transform: translate(-15%, -50%) rotate(-45deg);
-        }
-
         &:hover {
             background: linear-gradient(-90deg, transparent, rgba(black, .4));
-
-            &:after {
-                transform: translate(-25%, -50%) rotate(-45deg);
-            }
         }
     }
 
@@ -127,37 +86,33 @@
     }
 
     .modal-content {
-        margin: 100px auto 0;
+        display: flex;
+        flex-direction: column;
 
-        > figure {
-            position: relative;
-            padding: 0;
-            margin: 0;
-            max-height: 80vh;
+        width: 100%;
+        margin: 100px auto 0;
+        max-width: 800px;
+
+        > * {
+            flex: 1 1 0;
         }
 
         img {
-            //position: absolute;
-            //top: 0;
-            //left: 0;
-            //width: 100%;
-            max-width: calc(100vw - 200px);
-            max-height: 80vh;
-            margin: 0 auto;
-            object-fit: contain;
-
             display: block;
-        }
 
-        .submission-details-container {
-            background: white;
+            max-width: 100%;
+            max-height: 75vh;
+
+            margin: 0 auto;
+
+            object-fit: contain;
         }
 
         .submission-details {
-            max-width: 640px;
+            margin: 0 auto;
             padding: 24px 48px;
             color: black;
-            flex-shrink: 0;
+            background: white;
 
             h2 {
                 font-weight: normal;
@@ -176,6 +131,60 @@
                 margin-top: 1rem;
             }
         }
+    }
+
+    @media (max-width: 1000px) {
+        $nav-button-width: 60px;
+
+        .modal-previous,
+        .modal-next {
+            width: $nav-button-width;
+        }
+
+        .modal-content {
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 800px) {
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .modal-container {
+            width: 100vw;
+            height: 95vh;
+            flex: initial;
+            flex-shrink: 0;
+            order: 0;
+
+            img {
+                max-height: 90vh;
+            }
+        }
+
+        .modal-previous,
+        .modal-next {
+            order: 1;
+            height: 5vh;
+            width: 50vw;
+            background: black;
+
+            &:hover {
+                background: linear-gradient(transparent, rgba(black, .4));
+            }
+
+            svg {
+                width: 32px;
+            }
+        }
+
+        .modal-content {
+            .submission-details {
+                max-width: 100vw;
+                padding: 24px 24px;
+            }
+        }
+
     }
 }
 
