@@ -20,8 +20,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
             status: 'not_found'
         }),
         headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=604800, immutable'
+            'Content-Type': 'application/json'
         }
     };
 }
@@ -31,8 +30,7 @@ function respond(body: object) {
         statusCode: 200,
         body: JSON.stringify(body),
         headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=604800, immutable'
+            'Content-Type': 'application/json'
         }
     };
 }
