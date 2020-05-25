@@ -143,6 +143,8 @@ header.header {
         background: pink;
         overflow: hidden;
 
+        max-width: calc(100vw - #{$cell-spacing * 2});
+
         color: white;
         margin: 0 $cell-spacing $cell-spacing 0;
 
