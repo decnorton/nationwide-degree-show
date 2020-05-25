@@ -122,6 +122,8 @@ const app = new Vue({
                         this.allSubmissions.push(...submissions);
                         this.submissions.push(...submissions);
 
+                        this.applyCategoryFilter();
+
                         $state?.loaded();
                     } else {
                         $state?.complete();
@@ -164,9 +166,6 @@ Vue.directive('intersect', {
             entries.filter(e => e.isIntersecting).forEach(entry => {
                 entry.target.classList.add('visible');
             });
-
-            this.observer?.unobserve(el);
-            this.observer?.disconnect();
         });
 
         this.observer?.observe(el);
@@ -175,4 +174,4 @@ Vue.directive('intersect', {
     unbind: () => {
         this.observer?.disconnect();
     },
-})
+});
