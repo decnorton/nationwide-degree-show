@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 
 const version = 2;
 
@@ -30,7 +30,7 @@ registerRoute(
 
 registerRoute(
     ({ url }) => url.origin === self.location.origin && url.pathname.startsWith('/submissions/thumbs'),
-    new StaleWhileRevalidate({
+    new CacheFirst({
         cacheName: `submission-thumbs-v${version}`
     })
 );
