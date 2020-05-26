@@ -50,15 +50,31 @@ const app = new Vue({
         this.selectedCategory = JSON.parse(localStorage.getItem('category'));
 
         this._keyListener = function ($event: KeyboardEvent) {
-            if (!$event.metaKey && $event.key === 'ArrowDown') {
-                $event.preventDefault();
-
-                document.scrollingElement.scrollBy({
-                    top: this.size * 2
-                });
-            }
 
             if (!this.selectedSubmission) {
+                // Modal isn't showing
+                const $target = $event.target;
+
+                if ($target instanceof HTMLElement && $target.classList.contains('submission-cell')) {
+                    if ($event.key === 'ArrowLeft' || $event.key === 'ArrowUp') {
+                        const $previous = $target.previousElementSibling;
+
+                        if ($previous instanceof HTMLElement) {
+                            $event.preventDefault();
+                            $previous.focus()
+                        }
+                    }
+
+                    if ($event.key === 'ArrowRight' || $event.key === 'ArrowDown') {
+                        const $next = $target.nextElementSibling;
+
+                        if ($next instanceof HTMLElement) {
+                            $event.preventDefault();
+                            $next.focus();
+                        }
+                    }
+                }
+
                 return;
             }
 
