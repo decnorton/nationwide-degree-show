@@ -1,11 +1,11 @@
 import PromisePool from '@supercharge/promise-pool';
-import { CATEGORIES } from './categories';
 import { convertPdf, correctFileType, downloadFile, isImage, resizeImage } from './files';
+import { CATEGORIES, RAW_CATEGORIES } from './categories';
 
 const csv = require('csv-parse');
 const fs = require('fs');
 const path = require('path');
-import Vibrant = require('node-vibrant')
+import Vibrant = require('node-vibrant');
 
 export function parse(csvFile: string): Promise<RawSubmission[]> {
     return new Promise((resolve, reject) => {
@@ -21,7 +21,7 @@ export function parse(csvFile: string): Promise<RawSubmission[]> {
             if (error) {
                 reject(error);
             } else {
-                resolve(data);
+                resolve(data.filter(row => row.id));
             }
         });
 
@@ -38,7 +38,9 @@ export async function downloadFiles(submissions: RawSubmission[]): Promise<RawSu
     return await PromisePool.for(submissions)
         .withConcurrency(10)
         .process(async (submission: RawSubmission) => {
-            progress++;
+            const number = progress++;
+
+            // console.log(`⏱ ${number}/${total}`);
 
             try {
                 let filePath = await downloadFile(submission);
@@ -48,6 +50,7 @@ export async function downloadFiles(submissions: RawSubmission[]): Promise<RawSu
                 }
 
                 const result = await correctFileType(filePath);
+
                 filePath = result.path;
 
                 submission.mime = result.mime;
@@ -56,22 +59,36 @@ export async function downloadFiles(submissions: RawSubmission[]): Promise<RawSu
                     submission.file_path = filePath;
 
                     if (isImage(filePath)) {
-                        const compressedPath = await resizeImage(submission, filePath, 400, 60);
+                        const compressedPath = await resizeImage(submission, 400, 60);
 
-                        await resizeImage(submission, filePath, 100, 60);
-                        await resizeImage(submission, filePath, 800, 60);
-                        await resizeImage(submission, filePath, 2000, 60);
+                        await resizeImage(submission, 100, 60);
+                        await resizeImage(submission, 800, 60);
+                        await resizeImage(submission, 2000, 60);
 
+                        try {
+                            const colours = await Vibrant.from(compressedPath)
+                                .getPalette();
 
-                        const colours = await Vibrant.from(compressedPath).getPalette();
-
-                        submission.colour = colours.Muted.getHex();
-                        submission.thumb_path = compressedPath;
+                            submission.colour = colours.Muted.getHex();
+                            submission.thumb_path = compressedPath;
+                        } catch (error) {
+                            console.error(`❌ downloadFiles(): [${submission.id}] Error extracting colour: ${error.message}`);
+                        }
                     }
                 }
             } catch (error) {
-                console.error(`❌ downloadFiles(): ${error}`);
+                if (error.message.includes('Premature end of JPEG file')
+                    || error.message.includes('libpng read error')
+                    || error.message.includes('Read error')
+                ) {
+                    // Download was corrupted, delete it and try again
+                    fs.unlinkSync(submission.file_path);
+                }
+
+                console.error(`❌ downloadFiles(): [${submission.id}] ${error.message}`, error);
             }
+
+            // console.log(`✅ ${number}/${total}`);
 
             return submission;
         })
@@ -91,7 +108,7 @@ export function persist(dir: string, submissions: RawSubmission[]): Promise<Subm
     // Format JSON
     const results: Submission[] = submissions.map(submission => {
         // Figure out which data this submission belongs to
-        const submissionCategories = Object.keys(CATEGORIES).filter(key => submission[key]);
+        const submissionCategories = coerceCategories(Object.keys(RAW_CATEGORIES).filter(key => submission[key]));
         const width = submission.width;
         const height = submission.height;
 
@@ -116,6 +133,40 @@ export function persist(dir: string, submissions: RawSubmission[]): Promise<Subm
     fs.writeFileSync(`${dir}/submissions.json`, JSON.stringify(results));
 
     return Promise.resolve(results);
+}
+
+export function coerceCategories(rawCategories: string[]): string[] {
+    // Keep any of the ones that don't need coercing
+    const results = rawCategories.filter(c => Object.keys(CATEGORIES).includes(c));
+
+    // [from, to]
+    const pairs = [
+        ['architecture', 'architecture_and_set_design'],
+        ['theatre', 'architecture_and_set_design'],
+        ['branding', 'branding_and_packaging'],
+        ['packaging', 'branding_and_packaging'],
+        ['fashion', 'fashion_and_costume_design'],
+        ['costume', 'fashion_and_costume_design'],
+        ['film', 'film_and_video'],
+        ['video', 'film_and_video'],
+        ['fine_art', 'fine_art'],
+        ['sculpture', 'fine_art'],
+        ['contemporary', 'fine_art'],
+        ['graphic', 'graphic_design'],
+        ['marketing', 'graphic_design'],
+        ['communication', 'graphic_design'],
+    ];
+
+    for (let [from, to] of pairs) {
+        // Check if the raw category includes `from`
+        if (rawCategories.includes(from)) {
+            // Map it to the destination category
+            results.push(to);
+        }
+    }
+
+    // Remove any duplicates
+    return Array.from(new Set(results));
 }
 
 export interface RawSubmission {

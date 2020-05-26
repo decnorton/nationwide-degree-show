@@ -60,10 +60,10 @@ export async function downloadFile(submission: RawSubmission): Promise<string> {
     const downloadTo = path.resolve(originalsDir, fileName);
 
     // Check if there's an override
-
     const overrides = glob.sync(path.resolve(submissionsDir, 'overrides', `${submission.id}*`));
 
     if (overrides.length) {
+        console.log('override found: ' + overrides[0]);
         return Promise.resolve(overrides[0]);
     }
 
@@ -169,7 +169,8 @@ export async function correctFileType(filePath: string): Promise<{ path: string;
     }
 }
 
-export async function resizeImage(submission: RawSubmission, filePath: string, size: number, quality: number): Promise<string> {
+export async function resizeImage(submission: RawSubmission, size: number, quality: number): Promise<string> {
+    const filePath = submission.file_path;
     const destinationDir = path.resolve(thumbsDir, `${size}`);
 
     if (!fs.existsSync(destinationDir)) {
@@ -178,21 +179,31 @@ export async function resizeImage(submission: RawSubmission, filePath: string, s
         });
     }
 
+    if (!fs.existsSync(filePath)) {
+        console.error('File is missing: ' + filePath);
+    }
+
     // Get the base file name, without extension
     const fileName = path.basename(filePath, path.extname(filePath));
 
     // Make sure they're all converted to JPEG
     const destination = path.resolve(destinationDir, `${fileName}.jpg`);
 
+
     if (fs.existsSync(destination)) {
-        return Promise.resolve(destination);
+        const fileSize = fs.statSync(destination).size;
+
+        if (fileSize > 512) {
+            return Promise.resolve(destination);
+        }
+
+        console.warn(`Existing file was ${fileSize} bytes: ${destination}`);
     }
 
-    let builder = sharp(filePath)
-        .resize(size, size, {
-            fit: 'inside',
-            withoutEnlargement: true
-        });
+    let builder = sharp(filePath).resize(size, size, {
+        fit: 'inside',
+        withoutEnlargement: true
+    });
 
     // Don't convert gifs to JPEGs, but still resize them
     if (path.basename(filePath) !== 'gif') {
@@ -202,7 +213,7 @@ export async function resizeImage(submission: RawSubmission, filePath: string, s
     }
 
     return builder.toFile(destination)
-        .then(() => fileName, error => {
+        .then(() => destination, error => {
             console.error(`resizeImage(): Unable to resize image [${filePath}]: ${error.message}`);
 
             missingImages.push({
@@ -244,7 +255,7 @@ export async function probeImageDimensions(submissions: RawSubmission[]): Promis
 
 export async function compressFiles(size: number) {
     const files = await imagemin([
-        `${thumbsDir}/${size}/*`
+        `${thumbsDir}/${size}/*.jpg`
     ], {
         destination: `${thumbsDir}/${size}`,
         plugins: [

@@ -2,30 +2,65 @@ const fs = require('fs');
 
 import { RawSubmission } from './submissions';
 
-export const CATEGORIES = {
+export const RAW_CATEGORIES = {
     advertising: 'Advertising',
     animation: 'Animation',
     architecture: 'Architecture & Set Design',
     branding: 'Branding',
-    packaging: 'Packaging',
     ceramics: 'Ceramics',
-    fashion: 'Fashion',
+    communication: 'Communication',
+    contemporary: 'Contemporary',
     costume: 'Costume Design',
+    decorative: 'Decorative',
+    fashion: 'Fashion',
     film: 'Film',
-    video: 'Video',
-    marketing: 'Marketing',
     fine_art: 'Fine Art',
     game: 'Game',
     graphic: 'Graphic Design',
     illustration: 'Illustration',
     jewellery: 'Jewellery Design',
-    communication: 'Communication',
+    marketing: 'Marketing',
+    packaging: 'Packaging',
     photo: 'Photography',
     product: 'Product Design',
-    theatre: 'Theatre',
     sculpture: 'Sculpture',
     textile: 'Textile',
-    contemporary: 'Contemporary',
+    theatre: 'Theatre',
+    video: 'Video',
+};
+
+
+// Advertising
+// Animation
+// Architecture + Set Design (Theatre)
+// Branding (Packaging)
+// Ceramics
+// Fashion & Textiles (Costume)
+// Film (video)
+// Fine Art (Contemporary, Sculpture)
+// Game Design
+// Graphic Design (Marketing, communication)
+// Illustration
+// Jewellery
+// Photography
+// Product Design
+
+
+export const CATEGORIES = {
+    advertising: 'Advertising',
+    animation: 'Animation',
+    architecture_and_set_design: 'Architecture & Set Design',
+    branding_and_packaging: 'Branding & Packaging',
+    ceramics: 'Ceramics',
+    fashion_and_costume_design: 'Fashion, Textiles & Costume Design',
+    film_and_video: 'Film',
+    fine_art: 'Fine Art',
+    game: 'Game Design',
+    graphic_design: 'Graphic Design & Marketing',
+    illustration: 'Illustration',
+    jewellery: 'Jewellery Design',
+    photo: 'Photography',
+    product: 'Product Design',
 };
 
 export function createCategories(dir: string): Promise<void> {

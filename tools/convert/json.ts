@@ -3,8 +3,8 @@ const csv = require('csv-parse');
 const fs = require('fs');
 const copyDir = require('copy-dir');
 
-import { createCategories } from './categories';
 import { compressFiles, missingImages, probeImageDimensions } from './files';
+import { createCategories } from './categories';
 import { downloadFiles, parse as parseSubmissions, persist as persistSubmissions } from './submissions';
 
 const dataDir = path.resolve(__dirname, '../../data');
@@ -61,5 +61,7 @@ createCategories(preparedDir)
                 .map(({ id, name, extension, reason, link }) => [`"${id}"`, `"${name}"`, `"${reason}"`, `"${extension}"`, `"${link}"`].join(','))
                 .join('\n')
         );
+    }, error => {
+        console.error(`❌ Error: ${error.message}`, error);
     });
 
