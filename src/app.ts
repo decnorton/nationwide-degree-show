@@ -112,10 +112,13 @@ const app = new Vue({
             }
         },
 
-        changeSize(size: number) {
-            this.size = size;
+        changeSize(amount: number) {
+            const newSize = this.size + amount;
 
-            localStorage.setItem('size', String(size));
+            // Clamp to 100-500
+            this.size = Math.max(100, Math.min(500, newSize));
+
+            localStorage.setItem('size', String(this.size));
 
             this.fetch();
         },

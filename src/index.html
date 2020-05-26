@@ -35,9 +35,25 @@
 
     <nav class="submission-controls" v-cloak>
         <div class="grid-sizes">
-            <button @click="changeSize(100)">Small</button>
-            <button @click="changeSize(300)">Medium</button>
-            <button @click="changeSize(500)">Large</button>
+            <button @click="changeSize(-100)" :disabled="size == 100">
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0)">
+                        <line y1="11.5" x2="48" y2="11.5" stroke="currentColor"/>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0">
+                            <rect width="24" height="24" fill="currentColor"/>
+                        </clipPath>
+                    </defs>
+                </svg>
+            </button>
+
+            <button @click="changeSize(100)" :disabled="size == 500">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="12.25" y1="2.18557e-08" x2="12.25" y2="24" stroke="currentColor"/>
+                    <line y1="11.25" x2="24" y2="11.25" stroke="currentColor"/>
+                </svg>
+            </button>
         </div>
 
         <div class="category-select">
