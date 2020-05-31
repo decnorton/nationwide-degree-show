@@ -10,3 +10,5 @@ dist/
 .DS_Store
 
 src/static/submissions/original
+
+data/submissions.csv
