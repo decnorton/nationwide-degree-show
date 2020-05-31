@@ -45,7 +45,6 @@ export const RAW_CATEGORIES = {
 // Photography
 // Product Design
 
-
 export const CATEGORIES = {
     advertising: 'Advertising',
     animation: 'Animation',
@@ -68,9 +67,5 @@ export function createCategories(dir: string): Promise<void> {
 
     fs.writeFileSync(`${dir}/categories.json`, contents);
 
-    return Promise.resolve();
-}
-
-export function associateCategories(dir: string, submissions: RawSubmission[]): Promise<void> {
     return Promise.resolve();
 }

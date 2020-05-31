@@ -1,11 +1,10 @@
 const path = require('path');
-const csv = require('csv-parse');
 const fs = require('fs');
 const copyDir = require('copy-dir');
 
-import { compressFiles, missingImages, probeImageDimensions } from './files';
-import { createCategories } from './categories';
-import { downloadFiles, parse as parseSubmissions, persist as persistSubmissions } from './submissions';
+import { createCategories } from './lib/categories';
+import { compressFiles, missingImages, probeImageDimensions } from './lib/files';
+import { downloadFiles, parse as parseSubmissions, persist as persistSubmissions } from './lib/submissions';
 
 const dataDir = path.resolve(__dirname, '../../data');
 const preparedDir = path.resolve(dataDir, 'prepared');

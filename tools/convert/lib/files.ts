@@ -322,7 +322,7 @@ function fetchDimensions(submission: RawSubmission): Promise<{ width: number; he
         });
 }
 
-export function isImage(filePath: string) {
+export function isImage(filePath: string): boolean {
     // Get the extension and strip the dot
     const extension = path.extname(filePath).slice(1);
 

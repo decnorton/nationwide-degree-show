@@ -13,3 +13,4 @@ dist/
 src/static/submissions/original
 
 data/submissions.csv
+tools/convert/missing-images.csv
