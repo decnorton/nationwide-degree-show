@@ -1,21 +1,15 @@
 const categories = require('../data/categories.json');
 const submissions = require('../data/submissions.json') as any[];
-const defaultChunkSize = 50;
+const defaultPageSize = 50;
 
 export async function getSubmissions(page: number): Promise<any> {
     let start;
     let results = [];
 
-    start = (page - 1) * defaultChunkSize;
+    start = (page - 1) * defaultPageSize;
 
     if (start < submissions.length) {
-        results = submissions.slice(start, start + defaultChunkSize);
-
-        console.log({
-            start,
-            finish: start + defaultChunkSize,
-            page
-        });
+        results = submissions.slice(start, start + defaultPageSize);
     }
 
     return {
@@ -23,13 +17,12 @@ export async function getSubmissions(page: number): Promise<any> {
         meta: {
             page,
             start,
-            finish: start + defaultChunkSize
+            finish: start + defaultPageSize,
+            timestamp: new Date().toJSON()
         }
     };
 }
 
 export async function getCategories(): Promise<any> {
-    return {
-        data: categories
-    };
+    return { data: categories };
 }

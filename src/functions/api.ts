@@ -2,8 +2,6 @@ import { APIGatewayEvent, Context } from 'aws-lambda';
 import { getCategories, getSubmissions } from './lib/repository';
 
 export async function handler(event: APIGatewayEvent, context: Context) {
-    console.log('path', event.path);
-
     const path = event.path.replace('/.netlify/functions/api/', '');
 
     const parts = path.split('/');
@@ -41,8 +39,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
             status: 'not_found'
         }),
         headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=604800, immutable'
+            'Content-Type': 'application/json'
         }
     };
 }
@@ -53,7 +50,7 @@ function respond(body: object) {
         body: JSON.stringify(body),
         headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=604800, immutable'
+            'Cache-Control': 'public, max-age=604800, immutable' // Cache API responses for a week
         }
     };
 }

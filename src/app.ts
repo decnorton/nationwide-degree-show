@@ -7,6 +7,13 @@ import { fetchCategories } from './lib/categories';
 import { fetchSubmissions } from './lib/submissions';
 import { debounce } from './lib/utils/debounce';
 
+if ('serviceWorker' in navigator) {
+    // Use the window load event to keep the page load performant
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.ts');
+    });
+}
+
 Vue.use(VueLazyload)
 Vue.use(InfiniteLoading, {
     slots: {
@@ -16,7 +23,7 @@ Vue.use(InfiniteLoading, {
 });
 Vue.component('v-select', vSelect);
 
-// register modal component
+// Register the submission modal component
 Vue.component('submission-modal', {
     template: '#submission-modal',
     props: ['showing'],
@@ -202,31 +209,28 @@ const app = new Vue({
     }
 });
 
-// Register a global custom directive called `v-focus`
-Vue.directive('intersect', {
-    // When the bound element is inserted into the DOM...
-    inserted: (el) => {
-        if (!el || !('IntersectionObserver' in window)) {
-            return;
-        }
+// Add a global direct to add a `visible` class to elements once they become visible on the page.
+if ('IntersectionObserver' in window) {
+    Vue.directive('intersect', {
+        // When the bound element is inserted into the DOM...
+        inserted: (el) => {
+            if (!el) {
+                return;
+            }
 
-        this.observer = new IntersectionObserver((entries) => {
-            entries.filter(e => e.isIntersecting).forEach(entry => {
-                entry.target.classList.add('visible');
+            this.observer = new IntersectionObserver((entries) => {
+                entries.filter(e => e.isIntersecting).forEach(entry => {
+                    entry.target.classList.add('visible');
+                });
             });
-        });
 
-        this.observer?.observe(el);
-    },
+            this.observer?.observe(el);
+        },
 
-    unbind: () => {
-        this.observer?.disconnect();
-    },
-});
-
-if ('serviceWorker' in navigator) {
-    // Use the window load event to keep the page load performant
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.ts');
+        unbind: () => {
+            this.observer?.disconnect();
+        },
     });
 }
+
+console.log('Find out how this site was built @ https://github.com/freshmeet-uk/nationwide-degree-show');

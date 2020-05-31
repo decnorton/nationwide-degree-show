@@ -6,9 +6,6 @@ export interface Category {
 }
 
 export function fetchCategories(): Promise<Category[]> {
-    return axios.get('/.netlify/functions/api/categories').then(response => {
-        const categories: Category[] = response.data.data;
-
-        return categories;
-    });
+    return axios.get('/.netlify/functions/api/categories')
+        .then(response => response.data.data);
 }

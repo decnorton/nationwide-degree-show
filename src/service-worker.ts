@@ -34,5 +34,3 @@ registerRoute(
         cacheName: `submission-thumbs-v${version}`
     })
 );
-
-console.log(`Yay! Workbox is loaded 🎉`);
