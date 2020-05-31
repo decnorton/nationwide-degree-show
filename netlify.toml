@@ -12,3 +12,9 @@
     base = "./"
     command = "yarn serve"
     autoLaunch = true
+
+[[redirects]]
+  from = "/about.html"
+  to = "/about"
+  status = 200
+  force = false

@@ -43,15 +43,9 @@ header.header {
     display: flex;
     margin: 1rem;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
     justify-content: stretch;
     overflow: hidden;
-
-    .colour-bars {
-        width: 32px;
-        margin: 0 32px;
-        min-width: 32px;
-    }
 
     .header-logo {
         max-width: 240px;
@@ -66,6 +60,27 @@ header.header {
 
     .header-content {
         overflow: hidden;
+    }
+
+    > nav {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        margin-right: 24px;
+
+        > * {
+            margin-left: 16px;
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        > a {
+            transition: opacity .3s;
+
+            &:hover {
+                opacity: 1
+            }
+        }
     }
 }
 
@@ -274,6 +289,47 @@ footer {
         }
     }
 
+}
+
+article.about {
+    display: flex;
+    flex-direction: row;
+    margin: 24px;
+    margin-top: 64px;
+
+    .about-text {
+        flex-shrink: 0;
+        max-width: 480px;
+
+        h3 {
+            margin-top: 3rem;
+        }
+
+        dl {
+            dt, dd {
+                margin: 0;
+                padding: 0;
+            }
+
+            dt {
+                margin-bottom: 2px;
+                font-weight: bold;
+                letter-spacing: -0.5px;
+            }
+
+            dd {
+                margin-bottom: 12px;
+            }
+        }
+    }
+
+    .about-images {
+        margin-left: 48px;
+
+        img {
+            max-width: 100%;
+        }
+    }
 }
 
 @import 'scss/category-filter';
