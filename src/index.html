@@ -46,14 +46,7 @@
                     :disabled="size == 100"
                     aria-label="Zoom out">
                 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0)">
-                        <line y1="11.5" x2="48" y2="11.5" stroke="currentColor"/>
-                    </g>
-                    <defs>
-                        <clipPath id="clip0">
-                            <rect width="24" height="24" fill="currentColor"/>
-                        </clipPath>
-                    </defs>
+                    <line y1="12" x2="24" y2="12" stroke="currentColor"/>
                 </svg>
             </button>
 
@@ -141,15 +134,9 @@
              @click="$emit('close')">
             <div class="modal-wrapper">
                 <div class="modal-previous" @click.stop="$emit('previous')">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                        <g clip-path="url(#clip0)" stroke="#fff">
-                            <path d="M37.312-.605l-25 25M35.646 48.354l-24-24"/>
-                        </g>
-                        <defs>
-                            <clipPath id="clip0">
-                                <path fill="#fff" d="M0 0h48v48H0z"/>
-                            </clipPath>
-                        </defs>
+                    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="33.3536" y1="4.35355" x2="13.3536" y2="24.3536" stroke="white"/>
+                        <line x1="33.6881" y1="45.3119" x2="12.6881" y2="24.3119" stroke="white"/>
                     </svg>
                 </div>
 
@@ -160,28 +147,16 @@
                 </div>
 
                 <div class="modal-next" @click.stop="$emit('next')">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                        <g clip-path="url(#clip0)" stroke="#fff">
-                            <path d="M11.605 47.646l25-25M13.27-1.312l24 24"/>
-                        </g>
-                        <defs>
-                            <clipPath id="clip0">
-                                <path fill="#fff" d="M0 0h48v48H0z"/>
-                            </clipPath>
-                        </defs>
+                    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="13.6464" y1="44.6464" x2="33.6464" y2="24.6464" stroke="white"/>
+                        <line x1="13.3119" y1="3.68807" x2="34.3119" y2="24.6881" stroke="white"/>
                     </svg>
                 </div>
 
                 <div class="modal-close" @click="$emit('close')">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                        <g clip-path="url(#clip0)" stroke="#fff">
-                            <path d="M48.354.354L.27 48.437M47.646 48.354L-.437.27"/>
-                        </g>
-                        <defs>
-                            <clipPath id="clip0">
-                                <path fill="#fff" d="M0 0h48v48H0z"/>
-                            </clipPath>
-                        </defs>
+                    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0.646447" y1="45.6464" x2="45.9013" y2="0.391613" stroke="white"/>
+                        <line x1="1.35355" y1="0.646447" x2="46.6084" y2="45.9013" stroke="white"/>
                     </svg>
                 </div>
             </div>
