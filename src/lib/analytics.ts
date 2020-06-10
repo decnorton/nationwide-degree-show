@@ -1,7 +1,13 @@
 import { Submission } from './submissions';
 
 export function trackSubmissionView(submission: Submission) {
-    if (!submission || !('gtag' in window)) {
+    if (!submission) {
+        console.warn('Missing submission');
+        return;
+    }
+
+    if (!('gtag' in window)) {
+        console.warn('Missing gtag from window')
         return;
     }
 
@@ -9,6 +15,8 @@ export function trackSubmissionView(submission: Submission) {
         event_value: submission.id,
         event_label: `Submission: ${submission.name} [${submission.id}]`,
     });
+
+    console.log('Using GA ID ' + window['gaMeasurementId']);
 
     gtag('config', window['gaMeasurementId'], {
         page_title: `Submission: ${submission.name} [${submission.id}]`,
