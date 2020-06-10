@@ -2,6 +2,7 @@ import Vue from 'vue';
 import InfiniteLoading from 'vue-infinite-loading';
 import VueLazyload from 'vue-lazyload';
 import vSelect from 'vue-select'
+import { trackSubmissionView } from './lib/analytics';
 
 import { fetchCategories } from './lib/categories';
 import { fetchSubmissions } from './lib/submissions';
@@ -49,6 +50,10 @@ const app = new Vue({
             localStorage.setItem('category', JSON.stringify(this.selectedCategory));
 
             this.applyCategoryFilter();
+        },
+
+        selectedSubmission() {
+            trackSubmissionView(this.selectedSubmission);
         }
     },
 
