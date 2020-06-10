@@ -171,9 +171,12 @@
 <script>
     window.gaMeasurementId = 'UA-43018568-2';
 </script>
+
 <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    window.gtag = function gtag() {
+        dataLayer.push(arguments);
+    }
     gtag('js', new Date());
     gtag('config', window.gaMeasurementId);
 </script>
