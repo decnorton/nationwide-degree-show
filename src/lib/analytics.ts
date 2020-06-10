@@ -5,13 +5,12 @@ export function trackSubmissionView(submission: Submission) {
         return;
     }
 
-    gtag('event', 'view_item', {
-        type: 'submission',
-        submission_id: submission.id,
-        name: `Submission: ${submission.name} [${submission.id}]`,
+    gtag('event', 'view_submission', {
+        event_value: submission.id,
+        event_label: `Submission: ${submission.name} [${submission.id}]`,
     });
 
-    gtag('config', 'GA_MEASUREMENT_ID', {
+    gtag('config', window['gaMeasurementId'], {
         page_title: `Submission: ${submission.name} [${submission.id}]`,
         page_path: `/submissions/${submission.id}`
     });
