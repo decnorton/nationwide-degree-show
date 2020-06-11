@@ -1,3 +1,4 @@
+
 $breakpoint: 640px;
 $font-family: journal, sans-serif;
 
@@ -9,7 +10,12 @@ $font-family: journal, sans-serif;
     font-size: 16px;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
+    margin: 0;
     background: black;
     color: white;
 
@@ -20,30 +26,26 @@ body {
     font-size: 16px;
 }
 
+[v-cloak] {
+    display: none
+}
+
+main.container {
+    //max-width: 1280px;
+    margin: 0 auto;
+}
+
 a[href] {
     color: white;
 }
 
-.content {
-    max-width: 960px;
-    margin: 0 auto;
-}
-
 header.header {
-    @extend .content;
-
     display: flex;
-    margin-top: 64px;
+    margin: 1rem;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
     justify-content: stretch;
     overflow: hidden;
-
-    .colour-bars {
-        width: 32px;
-        margin: 0 32px;
-        min-width: 32px;
-    }
 
     .header-logo {
         max-width: 240px;
@@ -60,52 +62,31 @@ header.header {
         overflow: hidden;
     }
 
-    .header-description {
+    > nav {
         display: flex;
-        flex-direction: row;
-        max-width: 100%;
-        margin-top: 24px;
+        align-items: center;
+        margin-left: auto;
+        margin-right: 24px;
 
-        p {
-            line-height: 1.2;
+        > * {
+            margin-left: 24px;
+            text-decoration: none;
+            opacity: 0.8;
         }
-    }
 
-    .header-description > section > p:first-child {
-        margin-top: 0;
-    }
+        > a {
+            transition: opacity .3s;
 
-    .header-description > figure {
-        width: 50%;
-        margin: 0;
-        margin-left: 32px;
-        flex-shrink: 0;
-    }
-
-    .header-description > figure > img {
-        width: 100%;
-        height: auto;
-    }
-
-    @media (max-width: $breakpoint) {
-        //flex-direction: column;
-
-        .header-description {
-            flex-direction: column;
-            margin-right: 16px;
-            //align-items: center;
-
-
-            figure {
-                width: auto;
-                margin: 32px 48px 0 0;
+            &:hover {
+                opacity: 1
             }
         }
-
-        .colour-bars {
-            margin: 0 16px;
-        }
     }
+}
+
+footer {
+    padding: 24px;
+    text-align: center;
 }
 
 .button {
@@ -130,99 +111,243 @@ header.header {
     }
 }
 
-.recent-submissions {
-    margin-top: 64px;
+.submission-controls {
+    position: sticky;
+    top: 0;
+    z-index: 100;
 
-    > h2 {
-        margin: 0;
-        padding: 24px;
-        background: white;
-        color: black;
-        text-align: center;
-        font-weight: 300;
-        font-size: 2rem;
-    }
-
-    .submissions-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        grid-column-gap: 2px;
-
-        > figure {
-            position: relative;
-            margin: 0;
-            background: pink;
-            overflow: hidden;
-
-            img {
-                width: 100%;
-                height: 0;
-                padding-top: 80%;
-            }
-
-            figcaption {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                padding: 48px 24px 24px;
-                background: linear-gradient(transparent, black);
-                line-height: 1.2;
-
-                p {
-                    margin: 0;
-                }
-            }
-
-            .submission-creator {
-                font-weight: bold;
-            }
-
-            .submission-institution {
-                color: rgba(white, .75);
-            }
-        }
-    }
-}
-
-.notice {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 1rem 16px;
-    border: 1px dashed rgba(white, .2);
+    flex-wrap: wrap;
+    padding: 24px 24px;
+    background: black;
 
-    a[href] {
+    .grid-sizes {
+        margin-right: auto;
+
+        button {
+            padding: 8px;
+            margin: 0;
+            border: none;
+            line-height: 1;
+            appearance: none;
+            background: transparent;
+
+            color: white;
+
+            cursor: pointer;
+            border-radius: 100px;
+
+            outline: none;
+
+            svg {
+                opacity: .8;
+                transition: opacity .3s;
+            }
+
+            &:focus {
+                box-shadow: 0 0 6px 3px rgba(#009FE3, .4);
+            }
+
+            &[disabled] {
+                svg {
+                    opacity: .2;
+                }
+            }
+        }
+
+        @media (max-width: 420px) {
+            display: none;
+        }
+    }
+
+    .category-select {
+        min-width: 320px;
         margin-left: auto;
-    }
 
-    > p {
-        margin: 0;
-        margin-right: 1rem;
-    }
+        .vs__dropdown-toggle {
+            border: 0;
+            border-bottom: 1px solid white;
+        }
 
-
-    @media (max-width: $breakpoint) {
-        flex-direction: column;
-        align-items: flex-start;
-
-        a[href] {
-            margin: 1rem 0 0;
+        ::placeholder {
+            font-family: $font-family;
         }
     }
 }
 
-.closed {
-    opacity: .8;
+.submissions-grid {
+    $row-height: 300px;
+    $cell-spacing: 1rem;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    padding-top: $cell-spacing;
+    margin-left: $cell-spacing;
+
+    min-height: 24px;
+
+    > figure {
+        position: relative;
+        max-height: $row-height;
+        background: pink;
+        overflow: hidden;
+
+        max-width: calc(100vw - #{$cell-spacing * 2});
+
+        color: white;
+        margin: 0 $cell-spacing $cell-spacing 0;
+
+        flex: 1 0 auto;
+
+        cursor: pointer;
+        opacity: 0;
+
+        &:focus {
+            box-shadow: 0 0 0 .5rem white;
+            outline: none   ;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+
+            transition: all 1s;
+            object-fit: cover;
+
+            &[lazy=loading] {
+                opacity: 0;
+            }
+
+            &[lazy=error] {
+                /*your style here*/
+            }
+
+            &[lazy=loaded] {
+                opacity: 1;
+            }
+        }
+
+        figcaption {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 48px 24px 24px;
+            background: linear-gradient(transparent, black);
+            line-height: 1.2;
+
+            p {
+                margin: 0;
+            }
+        }
+
+        &.visible {
+            animation: appear 1s ease forwards;
+
+            // Stagger the animations to make it feel more natural
+            &:nth-child(4n - 3) {
+                animation-duration: 0.2s;
+            }
+
+            &:nth-child(4n - 2) {
+                animation-duration: 0.8s;
+            }
+
+            &:nth-child(4n - 1) {
+                animation-duration: 2s;
+            }
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                filter: grayscale(100%);
+                transform: translateY($cell-spacing * 2);
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    }
+
+    @media (max-width: 420px) {
+        flex-direction: column;
+
+        > figure {
+            width: 100%;
+            max-width: calc(100vw - #{$cell-spacing * 2});
+            max-height: none;
+        }
+    }
+
 }
 
-.get-involved {
-    margin: 64px 80px 0;
+article.about {
+    display: flex;
+    flex-direction: row;
+    margin: 24px;
+    margin-top: 64px;
+    font-size: 1.1rem;
 
-    @extend .notice;
+    .about-text {
+        flex-shrink: 0;
+        max-width: 520px;
 
-    @media (max-width: $breakpoint) {
-        margin-left: 16px;
-        margin-right: 16px;
+        margin-left: 64px;
+
+        h3 {
+            margin-top: 3rem;
+        }
+
+        dl {
+            dt, dd {
+                margin: 0;
+                padding: 0;
+            }
+
+            dt {
+                margin-bottom: 2px;
+                font-weight: bold;
+                letter-spacing: -0.5px;
+            }
+
+            dd {
+                margin-bottom: 12px;
+            }
+        }
+    }
+
+    .about-images {
+        margin-left: 48px;
+
+        img {
+            max-width: 100%;
+        }
+    }
+
+    @media (max-width: 1100px) {
+        flex-direction: column;
+        .about-images {
+            order: 0;
+            margin: 0;
+            margin-bottom: 32px;
+        }
+
+        .about-text {
+            order: 1;
+            margin: 32px;
+        }
     }
 }
+
+@import 'scss/category-filter';
+@import 'scss/submission-modal';

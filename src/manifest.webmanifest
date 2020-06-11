@@ -1,0 +1,22 @@
+{
+    "name": "Nationwide Degree Show",
+    "short_name": "Nationwide Degree Show",
+    "theme_color": "#000000",
+    "background_color": "#000000",
+    "display": "minimal-ui",
+    "Scope": "/",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "/assets/favicon/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/favicon/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "splash_pages": null
+}
