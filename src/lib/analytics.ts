@@ -11,15 +11,14 @@ export function trackSubmissionView(submission: Submission) {
         return;
     }
 
-    gtag('event', 'view_submission', {
+    gtag('event', 'view', {
+        event_category: 'submissions',
         event_value: submission.id,
         event_label: `Submission: ${submission.name} [${submission.id}]`,
     });
-
-    console.log('Using GA ID ' + window['gaMeasurementId']);
-
+    
     gtag('config', window['gaMeasurementId'], {
-        page_title: `Submission: ${submission.name} [${submission.id}]`,
+        page_title: `Submission: ${submission.name}`,
         page_path: `/submissions/${submission.id}`
     });
 }
