@@ -7,7 +7,7 @@
     "postinstall": "netlify-lambda install"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "netlify-lambda": "^1.6.3",
     "parcel-bundler": "^1.12.4",
     "vue": "^2.6.11",
